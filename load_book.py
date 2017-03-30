@@ -12,13 +12,17 @@ def main():
     list_r = []
     list_c = []
     for line in file.readlines():
-            if line[-1]=="r": # if and elif aren't working, refer to previous work
-                list_r = line.split(",")
-            elif line[-1]=="c":
-                list_c = line.split(",")
-    print ("This is list_c: {}\nThis is list_r: {}".format(list_c,list_r))
+        line2 = line.split(",")
+        print (line2[-1])
 
+        if line2[-1] == "r\n":
+            list_r += [line.split(",")]
+        elif line2[-1] == "c\n":
+            list_c += [line.split(",")]
+    print("This is list_c: {}\nThis is list_r: {}".format(list_c, list_r))
+    print(list_c[0])
 
+# appending each object of list to list, not list itself
 
 if __name__ == '__main__':
     main()
