@@ -13,19 +13,12 @@ def main():
     list_c = []
     for line in file.readlines():
         line2 = line.split(",")
-        print (line2[-1])
-
         if line2[-1] == "r\n":
             list_r += [line.split(",")]
         elif line2[-1] == "c\n":
             list_c += [line.split(",")]
     print("This is list_c: {}\nThis is list_r: {}".format(list_c, list_r))
-    print(list_c[0])
-
-# appending each object of list to list, not list itself
-
-if __name__ == '__main__':
-    main()
+    print("Hello, my name is {}, and I am the author of {}.".format(list_c[0][1],list_c[0][0]))
 
     # string = "Hello World, my name is Broderick Thomsen, What's yours, huh?"
     # string2 = string.replace(" ", "_")
