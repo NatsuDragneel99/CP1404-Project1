@@ -19,7 +19,7 @@ def main():
             program_loop = 0
 
 
-def load_book(book_list, file):  # TODO: rename parameter
+def load_book(book_list, file):
     for line in file.readlines():
         book_list.append(line.split(","))
     return book_list
