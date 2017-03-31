@@ -16,8 +16,14 @@ def main():
         print("Menu:\nR - List required books\nC - List completed books\nA - Add new book\nM - Mark a book as completed\nQ - Quit")
         menu_input = str(input(">>> "))
         if menu_input == "r" or menu_input == "R":
-            print("0")
-            # List required books
+            if book_list[-1] != "r" or book_list[-1] != "R":
+                print("Required books:")
+                for selection, i in enumerate(book_list):
+                    display_book(i, selection)
+            else:
+                print("None.")
+            # display_book(book_list, menu_input)
+            # After books have been presented, use page_count with these books to count pages, return int to display
         elif menu_input == "c" or menu_input == "C":
             print("1")
             # List completed books
@@ -39,13 +45,13 @@ def load_book(book_list, file):
     return book_list
 
 
-def display_book(book_list, menu_input):
-    if menu_input == "r" or menu_input == "R":
-        for letter in book_list:
-            if letter[-1] == "r":
-                print ("OK") # 0. Title, Author, Pages
-                # append page number to new list, forward that list to page_count() (this should reset each rotation)
+def display_book(i, selection):
+    if i[-1] == "r\n":
+        return print("{:>3}. {:<40} {:<20} {} pages".format(selection, (i[0]), (i[1]), (i[2])))
 
+
+# print("This is object {} in book_list, it contains: {}".format(selection, book_list))
+# print("{}".format(i[-1]))
 
 
 if __name__ == '__main__':
