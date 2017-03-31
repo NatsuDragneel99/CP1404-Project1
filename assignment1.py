@@ -12,17 +12,18 @@ def main():
     book_list = []
     print("{} books loaded from {}".format(len(load_book(book_list, file)), file.name))
     program_loop = 1  # This method of looping is subject to change
-    while program_loop == 1:
+    while program_loop != 0:
         print("Menu:\nR - List required books\nC - List completed books\nA - Add new book\nM - Mark a book as completed\nQ - Quit")
         menu_input = str(input(">>> "))
-        if menu_input == "r" or menu_input == "R":
-            if book_list[-1] != "r" or book_list[-1] != "R":
-                print("Required books:")
-                for selection, i in enumerate(book_list):
-                    display_book(i, selection)
-            else:
-                print("None.")
-            # display_book(book_list, menu_input)
+        if menu_input == "r" or menu_input == "R": # TODO: Error checking if books aren't there. Print "Required Books" if there, "None" if not.
+            page_sum = 0 #gotta be a better way to count pages - function?
+            required_books = 0 # this could be in a list - make required reading into a list and return that from display books so can be used for "Required Books" and to easily count how many required books there are. You can return it back to the main list when done so changes are always accounted for, or maybe just do that when marking/adding a book.
+            for selection, i in enumerate(book_list):
+                display_book(i, selection)
+                if i[-1] == "r\n": # this is a mess
+                    page_sum += int(i[2])
+                    required_books += 1
+            print ("Total pages for {} books: {}".format(required_books,page_sum))
             # After books have been presented, use page_count with these books to count pages, return int to display
         elif menu_input == "c" or menu_input == "C":
             print("1")
@@ -37,6 +38,8 @@ def main():
             print("4")
             # Quit
             program_loop = 0
+        else:
+            print("Invalid menu choice")
 
 
 def load_book(book_list, file):
@@ -48,10 +51,11 @@ def load_book(book_list, file):
 def display_book(i, selection):
     if i[-1] == "r\n":
         return print("{:>3}. {:<40} {:<20} {} pages".format(selection, (i[0]), (i[1]), (i[2])))
+        #call page nubmer function with i and selection parameters, then make a list in page nubmers to forward that page number to main
+            #only used in required and completed
 
 
-# print("This is object {} in book_list, it contains: {}".format(selection, book_list))
-# print("{}".format(i[-1]))
+# def page_count():
 
 
 if __name__ == '__main__':
