@@ -15,16 +15,19 @@ def main():
     while program_loop != 0:
         print("Menu:\nR - List required books\nC - List completed books\nA - Add new book\nM - Mark a book as completed\nQ - Quit")
         menu_input = str(input(">>> "))
-        if menu_input == "r" or menu_input == "R": # TODO: "Required books:" or "None"
+        if menu_input == "r" or menu_input == "R": # TODO: "Required books:" and/or "None"
             page_sum = 0  # gotta be a better way to count pages
             num_books = 0  # this could be in a list - make required reading into a list and return that from display books so can be used for "Required Books" and to easily count how many required books there are. You can return it back to the main list when done so changes are always accounted for, or maybe just do that when marking/adding a book.
             display_book(book_list, menu_input, page_sum, num_books)
-        elif menu_input == "c" or menu_input == "C": # TODO: "Completed books:" or "None"
+        elif menu_input == "c" or menu_input == "C": # TODO: "Completed books:" and/or "None"
             page_sum = 0
             num_books = 0
             display_book(book_list, menu_input, page_sum, num_books)
         elif menu_input == "a" or menu_input == "A":
-            print("2")
+            add_book()
+            # file = file + add_book()
+            # print (file)
+
             # Add new book
         elif menu_input == "m" or menu_input == "M":
             print("3")
@@ -65,7 +68,37 @@ def page_sum(num_books, page_sum):
 
 #returns a list that'll be appended to book_list when called as . . .
 def add_book():
-    print("ok")
+    loop = 1
+    title = str # consider inclusion
+    author = str
+    pages = int
+    while loop != 0:
+        title = input("Title: ")
+        if len(title) == 0 or title == " ":
+            print("Input can not be blank")
+        else:
+            loop = 0
+    loop = 1
+    while loop !=0:
+        author = input("Author: ")
+        if len(author) == 0 or author == " ":
+            print("Input can not blank")
+        else:
+            loop = 0
+    loop = 1
+    while loop != 0:
+        try:
+            pages = int(input("Pages: "))
+            if pages >= 0:
+                loop = 0
+            else:
+                print("Number must be >= 0")
+        except ValueError:
+            print("Invalid input; enter a valid number")
+    new_book = [title, author, pages]
+    return new_book
+
+
 
 
 if __name__ == '__main__':
