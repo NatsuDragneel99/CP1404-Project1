@@ -15,21 +15,19 @@ def main():
     while program_loop != 0:
         print("Menu:\nR - List required books\nC - List completed books\nA - Add new book\nM - Mark a book as completed\nQ - Quit")
         menu_input = str(input(">>> "))
-        if menu_input == "r" or menu_input == "R": # TODO: "Required books:" and/or "None"
+        if menu_input == "r" or menu_input == "R":
             display_book(book_list, menu_input)
-        elif menu_input == "c" or menu_input == "C": # TODO: "Completed books:" and/or "None"
+        elif menu_input == "c" or menu_input == "C":
             display_book(book_list, menu_input)
         elif menu_input == "a" or menu_input == "A":
             book_list = book_list + [add_book()]
             print("{} by {}, ({} pages) added to reading list".format(book_list[-1][0], book_list[-1][1], book_list[-1][2]))
         elif menu_input == "m" or menu_input == "M":
-            book_check(book_list, menu_input)
             display_book(book_list, menu_input)
             # Mark a book as completed
         elif menu_input == "q" or menu_input == "Q":
-            print("4")
-            # Quit
             program_loop = 0
+            # Quit
         else:
             print("Invalid menu choice")
 
@@ -59,6 +57,7 @@ def book_check(book_list, menu_input):
             print("No books")
         return y
 
+
 # (rename func) or (isolate page_sum into own func and call from main)
 def display_book(book_list, menu_input):
     b = book_check(book_list, menu_input)
@@ -82,6 +81,7 @@ def display_book(book_list, menu_input):
 def page_sum(num_books, total_pages, b):
     if b == 1:
         print("Total pages for {} books: {}".format(num_books, total_pages))
+
 
 # returns a list that'll be appended to book_list when called as . . .
 def add_book():
