@@ -29,8 +29,15 @@ def main():
             display_book(book_list, menu_input)
         elif menu_input == "q" or menu_input == "Q":
             program_loop = 0
-            # Save changes to file
-            # X books saved to file.csv
+            b = 0
+            file.close()
+            file = open("temp.csv", "w") # Whilst this works, it's not as efficient as it can be. Need to fix.
+            for line in book_list:
+                v = ",".join(line)
+                file.write(v)
+                b += 1
+            print("{} books saved to {}".format(b, file.name))
+            file.close()
         else:
             print("Invalid menu choice")
     print("Have a nice day :)")
