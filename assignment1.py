@@ -33,12 +33,13 @@ def main():
         elif menu_input == "q" or menu_input == "Q":
             main_loop = 0
             counter = 0  # consider renaming
-            file.close()
-            file = open("books.csv", "w")  # Not efficient. Doesn't work with adding books. Use seek() and truncate().
-            for selection in book_list:  # consider renaming index
-                separated_line = ",".join(selection)
-                file.write(separated_line)
+            books_string = ""
+            for book in book_list:
+                book_string = ",".join(book)
+                books_string += book_string
                 counter += 1
+            file.seek(0)
+            file.write(books_string)
             print("{} books saved to {}".format(counter, file.name))
             file.close()
         else:
@@ -107,6 +108,7 @@ def add_book():
         try:
             pages = int(input("Pages: "))
             if pages >= 0:
+                pages = str(pages)
                 loop = 0
             else:
                 print("Number must be >= 0")
