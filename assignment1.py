@@ -19,18 +19,26 @@ def main():
                            "M - Mark a book as completed\nQ - Quit\n>>>")).lower()
     while menu_input != "q":
         if menu_input == "r":
-            print("Required books:")
-            display_books(books_list, menu_input)
+            if book_check(books_list, menu_input):
+                print("Required books:")
+            else:
+                print("No books")
+
         elif menu_input == "c":
-            print("Completed books:")
-            display_books(books_list, menu_input)
+            if book_check(books_list, menu_input):
+                print("Completed books:")
+            else:
+                print("No books")
+
         elif menu_input == "a":
             books_list = books_list + [add_book()]
             print("{} by {}, ({} pages) added to reading list".format(books_list[-1][0], books_list[-1][1],
                                                                       books_list[-1][2]))
         elif menu_input == "m":
-            print("Required books:")
-            display_books(books_list, menu_input)
+            if book_check(books_list, menu_input):
+                print("Required books:")
+            else:
+                print("No required books")
         else:
             print("Invalid menu choice")
         menu_input = str(input("Menu:\nR - List required books\nC - List completed books\nA - Add new book\n"
@@ -47,6 +55,16 @@ def main():
 
     print("{} books saved to {}".format(len(books_list), FILE_NAME))
     print("Have a nice day :)")
+
+
+def book_check(books_list, mode):
+    book_status = False
+    for book in books_list:
+        if book[-1] == "r\n" and mode == "r" or mode == "m":
+            book_status = True
+        elif book[-1] == "c\n" and mode == "c":
+            book_status = True
+    return book_status
 
 
 def load_book():
