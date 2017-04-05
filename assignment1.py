@@ -5,15 +5,12 @@ Project details:
 https://github.com/CP1404-2017-1/a1-BroderickWST
 """
 
-# "You should be able to use generic, customisable functions to perform input with error checking"
-
-
 FILE_NAME = "books.csv"
 
 
 def main():
     print("Reading List 1.0 - by Broderick Thomsen")
-    books_list = load_book()
+    books_list = load_books()
     print("{} books loaded from {}".format(len(books_list), FILE_NAME))
     menu_input = str(input("Menu:\nR - List required books\nC - List completed books\nA - Add new book\n"
                            "M - Mark a book as completed\nQ - Quit\n>>>")).lower()
@@ -50,7 +47,7 @@ def main():
     print("Have a nice day :)")
 
 
-def load_book():
+def load_books():
     book_list = []
     file = open("books.csv", "r+")
     for row in file.readlines():
@@ -62,8 +59,9 @@ def load_book():
 def book_check(books_list, mode):
     book_status = False
     for book in books_list:
-        if book[-1] == "r\n" and mode == "r" or mode == "m":
-            book_status = True
+        if book[-1] == "r\n":
+            if mode == "r" or mode == "m":
+                book_status = True
         elif book[-1] == "c\n" and mode == "c":
             book_status = True
     return book_status
@@ -86,7 +84,7 @@ def display_books(books_list, mode):
 
 def add_book():
     title = input("Title: ")
-    while len(title) == 0 or title == " ":  # Can I put both Title and Author in a list, and then use a for loop to call them, so I only have to use the below process, once ?
+    while len(title) == 0 or title == " ":
         print("Input can not be blank")
         title = input("Title: ")
     author = input("Author: ")
@@ -115,7 +113,7 @@ def complete_book(books_list):
                 books_list[mark_choice][-1] = "c\n"
                 print("{} by {} marked as completed".format(books_list[mark_choice][0], books_list[mark_choice][1]))
                 return books_list
-            elif books_list[mark_choice][-1] == "c\n":
+            elif books_list[mark_choice][-1] == "c\n":  # Allows negative integers
                 print("That book is already completed")
                 loop = False
             else:
@@ -126,12 +124,9 @@ def complete_book(books_list):
 
 def save_books(books_list):
     file = open("books.csv", "w")
-    books_string = ""  # swap  to old method of just writing to file from str(books_list), more efficient, less complex
     for book in books_list:
         book_string = ",".join(book)
-        books_string += book_string
-    file.seek(0)
-    file.write(books_string)
+        file.write(book_string)
     file.close()
 
 
