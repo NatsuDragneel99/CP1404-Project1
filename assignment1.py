@@ -8,109 +8,98 @@ https://github.com/CP1404-2017-1/a1-BroderickWST
 # "You should be able to use generic, customisable functions to perform input with error checking"
 
 
+FILE_NAME = "books.csv"
+
+
 def main():
     print("Reading List 1.0 - by Broderick Thomsen")
-    file = open("books.csv", "r+")
-    books_list = load_book(file)
-    print("{} books loaded from {}".format(len(books_list), file.name))
+    books_list = load_book()
+    print("{} books loaded from {}".format(len(books_list), FILE_NAME))
     menu_input = str(input("Menu:\nR - List required books\nC - List completed books\nA - Add new book\n"
                            "M - Mark a book as completed\nQ - Quit\n>>>")).lower()
     while menu_input != "q":
         if menu_input == "r":
             print("Required books:")
-            for i in books_list:
-                if i[-1] == "r\n":
-                    display_books_x(i)
+            display_books(books_list, menu_input)
         elif menu_input == "c":
             print("Completed books:")
-            display_book(books_list, menu_input)
+            display_books(books_list, menu_input)
         elif menu_input == "a":
             books_list = books_list + [add_book()]
             print("{} by {}, ({} pages) added to reading list".format(books_list[-1][0], books_list[-1][1],
                                                                       books_list[-1][2]))
         elif menu_input == "m":
             print("Required books:")
-            display_book(books_list, menu_input)
-        elif menu_input == "q": # make the following a function:
-            main_loop = 0
-            # counter = 0  # consider renaming
-            books_string = ""
-            for book in books_list:
-                book_string = ",".join(book)
-                books_string += book_string
-                # counter += 1
-            file.seek(0)
-            file.write(books_string)
-            print("{} books saved to {}".format(len(books_list), file.name))
-            file.close()
-            print("Have a nice day :)")
+            display_books(books_list, menu_input)
         else:
             print("Invalid menu choice")
         menu_input = str(input("Menu:\nR - List required books\nC - List completed books\nA - Add new book\n"
                                "M - Mark a book as completed\nQ - Quit\n>>>")).lower()
+    # def save_books():
+    file = open("books.csv", "w")
+    books_string = ""  # swap  to old method of just writing to file from str(books_list), more efficient, less complex
+    for book in books_list:
+        book_string = ",".join(book)
+        books_string += book_string
+    file.seek(0)
+    file.write(books_string)
+    file.close()
+
+    print("{} books saved to {}".format(len(books_list), FILE_NAME))
+    print("Have a nice day :)")
 
 
-def load_book(file):
+def load_book():
     book_list = []
+    file = open("books.csv", "r+")
     for row in file.readlines():
         book_list.append(row.split(","))
+    file.close()
     return book_list
 
 
-def display_books_x(i):  # consider renaming function (print_book), parameters
-    # num_pages = 0
-    # num_books = 0
-    print("{:>3}. {:<40} {:<20} {} pages".format(i, (i[0]), (i[1]), (i[2])))
-    # for selection, item in enumerate(book_list):  # consider renaming indexes
-    #     if menu_input == "r" or menu_input == "m":
-    #         if item[-1] == "r\n":
-    #             print("{:>3}. {:<40} {:<20} {} pages".format(selection, (item[0]), (item[1]), (item[2])))  # turn into function?
-    #             num_pages += int(item[2])
-    #             num_books += 1
-    #             book_check = 1
-    #     elif menu_input == "c":
-    #         if item[-1] == "c\n":
-    #             print("{:>3}. {:<40} {:<20} {} pages".format(selection, (item[0]), (item[1]), (item[2])))
-    #             num_pages += int(item[2])
-    #             num_books += 1
-    #             book_check = 1
-    # if book_check == 0:
-    #     print("No books")
-    # page_sum(num_books, num_pages, book_check)
-    # if menu_input == "m" or menu_input == "M":
-    #     if book_check == 1:
-    #         complete_book(book_list)
-
-
-def display_book(book_list, menu_input):  # consider renaming function (print_book), parameters
-    book_check = 0  # consider renaming
+def display_books(books_list, mode):  # consider renaming function (print_book), parameters
+    list_content = False
     num_pages = 0
     num_books = 0
-    for selection, item in enumerate(book_list):  # consider renaming indexes
-        if menu_input == "r" or menu_input == "m":
-            if item[-1] == "r\n":
-                print("{:>3}. {:<40} {:<20} {} pages".format(selection, (item[0]), (item[1]), (item[2])))  # turn into function?
-                num_pages += int(item[2])
-                num_books += 1
-                book_check = 1
-        elif menu_input == "c":
-            if item[-1] == "c\n":
-                print("{:>3}. {:<40} {:<20} {} pages".format(selection, (item[0]), (item[1]), (item[2])))
-                num_pages += int(item[2])
-                num_books += 1
-                book_check = 1
-    if book_check == 0:
+    for book, item in enumerate(books_list):
+        if item[-1] != "r\n" and mode == "r" or mode == "m":
+            continue
+        elif item[-1] != "c\n" and mode == "c":
+            continue
+        print("{:>3}. {:<40} {:<20} {} pages".format(book, (item[0]), (item[1]), item[2]))
+        num_pages += int(item[2])
+        num_books += 1
+        list_content = True
+    if not list_content:
         print("No books")
-    page_sum(num_books, num_pages, book_check)
-    if menu_input == "m" or menu_input == "M":
-        if book_check == 1:
-            complete_book(book_list)
+    print("Total pages for {} books: {}".format(num_books, num_pages))
 
 
-# Necessary? Would it be better suited if called from main, to justify existence?
-def page_sum(total_books, total_pages, validation):
-    if validation == 1:
-        print("Total pages for {} books: {}".format(total_books, total_pages))
+# def display_books(books_list, mode):  # consider renaming function (print_book), parameters
+#     list_content = False  # consider renaming
+#     num_pages = 0
+#     num_books = 0
+#     for book, item in enumerate(books_list):  # consider renaming indexes
+#         if item[-1] == "r\n" and mode == "r" or mode == "m":
+#             print("{:>3}. {:<40} {:<20} {} pages".format(book, (item[0]), (item[1]), item[2]))
+#             num_pages += int(item[2])
+#             num_books += 1
+#             list_content = True
+#         if item[-1] == "c\n" and mode == "c":
+#             print("{:>3}. {:<40} {:<20} {} pages".format(book, (item[0]), (item[1]), (item[2])))
+#             num_pages += int(item[2])
+#             num_books += 1
+#             list_content = True
+#     if not list_content:
+#         print("No books")
+#     print("Total pages for {} books: {}".format(num_books, num_pages))
+
+
+#
+#     if mode == "m" or mode == "M":
+#         if book_check == 1:
+#             complete_book(book_list)
 
 
 # returns a list that'll be appended to book_list when called as . . .
