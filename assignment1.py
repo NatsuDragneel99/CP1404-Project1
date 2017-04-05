@@ -11,60 +11,89 @@ https://github.com/CP1404-2017-1/a1-BroderickWST
 def main():
     print("Reading List 1.0 - by Broderick Thomsen")
     file = open("books.csv", "r+")
-    book_list = []
-    print("{} books loaded from {}".format(len(load_book(book_list, file)), file.name))
-    main_loop = 1  # consider renaming
-    while main_loop != 0:
-        menu_input = str(input("Menu:\nR - List required books\nC - List completed books\nA - Add new book\n"
-                               "M - Mark a book as completed\nQ - Quit\n>>>"))
-        if menu_input == "r" or menu_input == "R":
+    books_list = load_book(file)
+    print("{} books loaded from {}".format(len(books_list), file.name))
+    menu_input = str(input("Menu:\nR - List required books\nC - List completed books\nA - Add new book\n"
+                           "M - Mark a book as completed\nQ - Quit\n>>>")).lower()
+    while menu_input != "q":
+        if menu_input == "r":
             print("Required books:")
-            display_book(book_list, menu_input)
-        elif menu_input == "c" or menu_input == "C":
+            for i in books_list:
+                if i[-1] == "r\n":
+                    display_books_x(i)
+        elif menu_input == "c":
             print("Completed books:")
-            display_book(book_list, menu_input)
-        elif menu_input == "a" or menu_input == "A":
-            book_list = book_list + [add_book()]
-            print("{} by {}, ({} pages) added to reading list".format(book_list[-1][0], book_list[-1][1],
-                                                                      book_list[-1][2]))
-        elif menu_input == "m" or menu_input == "M":
+            display_book(books_list, menu_input)
+        elif menu_input == "a":
+            books_list = books_list + [add_book()]
+            print("{} by {}, ({} pages) added to reading list".format(books_list[-1][0], books_list[-1][1],
+                                                                      books_list[-1][2]))
+        elif menu_input == "m":
             print("Required books:")
-            display_book(book_list, menu_input)
-        elif menu_input == "q" or menu_input == "Q":
+            display_book(books_list, menu_input)
+        elif menu_input == "q": # make the following a function:
             main_loop = 0
-            counter = 0  # consider renaming
+            # counter = 0  # consider renaming
             books_string = ""
-            for book in book_list:
+            for book in books_list:
                 book_string = ",".join(book)
                 books_string += book_string
-                counter += 1
+                # counter += 1
             file.seek(0)
             file.write(books_string)
-            print("{} books saved to {}".format(counter, file.name))
+            print("{} books saved to {}".format(len(books_list), file.name))
             file.close()
+            print("Have a nice day :)")
         else:
             print("Invalid menu choice")
-    print("Have a nice day :)")
+        menu_input = str(input("Menu:\nR - List required books\nC - List completed books\nA - Add new book\n"
+                               "M - Mark a book as completed\nQ - Quit\n>>>")).lower()
 
 
-def load_book(book_list, file):  # consider parameter names
+def load_book(file):
+    book_list = []
     for row in file.readlines():
         book_list.append(row.split(","))
     return book_list
 
 
-def display_book(book_list, menu_input):  # consider renaming function, parameters
+def display_books_x(i):  # consider renaming function (print_book), parameters
+    # num_pages = 0
+    # num_books = 0
+    print("{:>3}. {:<40} {:<20} {} pages".format(i, (i[0]), (i[1]), (i[2])))
+    # for selection, item in enumerate(book_list):  # consider renaming indexes
+    #     if menu_input == "r" or menu_input == "m":
+    #         if item[-1] == "r\n":
+    #             print("{:>3}. {:<40} {:<20} {} pages".format(selection, (item[0]), (item[1]), (item[2])))  # turn into function?
+    #             num_pages += int(item[2])
+    #             num_books += 1
+    #             book_check = 1
+    #     elif menu_input == "c":
+    #         if item[-1] == "c\n":
+    #             print("{:>3}. {:<40} {:<20} {} pages".format(selection, (item[0]), (item[1]), (item[2])))
+    #             num_pages += int(item[2])
+    #             num_books += 1
+    #             book_check = 1
+    # if book_check == 0:
+    #     print("No books")
+    # page_sum(num_books, num_pages, book_check)
+    # if menu_input == "m" or menu_input == "M":
+    #     if book_check == 1:
+    #         complete_book(book_list)
+
+
+def display_book(book_list, menu_input):  # consider renaming function (print_book), parameters
     book_check = 0  # consider renaming
     num_pages = 0
     num_books = 0
     for selection, item in enumerate(book_list):  # consider renaming indexes
-        if menu_input == "r" or menu_input == "R" or menu_input == "m" or menu_input == "M":
+        if menu_input == "r" or menu_input == "m":
             if item[-1] == "r\n":
                 print("{:>3}. {:<40} {:<20} {} pages".format(selection, (item[0]), (item[1]), (item[2])))  # turn into function?
                 num_pages += int(item[2])
                 num_books += 1
                 book_check = 1
-        elif menu_input == "c" or menu_input == "C":
+        elif menu_input == "c":
             if item[-1] == "c\n":
                 print("{:>3}. {:<40} {:<20} {} pages".format(selection, (item[0]), (item[1]), (item[2])))
                 num_pages += int(item[2])
