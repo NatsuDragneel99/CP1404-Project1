@@ -68,6 +68,7 @@ def book_check(books_list, mode):
             book_status = True
     return book_status
 
+
 def display_books(books_list, mode):
     num_pages = 0
     num_books = 0
@@ -84,35 +85,23 @@ def display_books(books_list, mode):
 
 
 def add_book():
-    loop = 1  # consider renaming
-    title = str
-    author = str
-    pages = int
-    while loop != 0:  # Can I put both Title and Author in a list, and then use a for loop to call them, so I only have to use the below process, once ?
+    title = input("Title: ")
+    while len(title) == 0 or title == " ":  # Can I put both Title and Author in a list, and then use a for loop to call them, so I only have to use the below process, once ?
+        print("Input can not be blank")
         title = input("Title: ")
-        if len(title) == 0 or title == " ":
-            print("Input can not be blank")
-        else:
-            loop = 0
-    loop = 1
-    while loop != 0:
+    author = input("Author: ")
+    while len(author) == 0 or author == " ":
+        print("Input can not blank")
         author = input("Author: ")
-        if len(author) == 0 or author == " ":
-            print("Input can not blank")
-        else:
-            loop = 0
-    loop = 1
-    while loop != 0:
+    pages = -1
+    while pages < 0:
         try:
             pages = int(input("Pages: "))
-            if pages >= 0:
-                pages = str(pages)
-                loop = 0
-            else:
+            if pages < 0:
                 print("Number must be >= 0")
         except ValueError:
             print("Invalid input; enter a valid number")
-    new_book = [title, author, pages, "r\n"]
+    new_book = [title, author, str(pages), "r\n"]
     return new_book
 
 
