@@ -38,7 +38,7 @@ def main():
                 print("Required books:")
                 display_books(books_list, menu_input)
                 print("Enter the number of a book to mark as completed")
-                mark_choice = verify_mark_num()
+                mark_choice = verify_mark_num(books_list)
                 if books_list[mark_choice][-1] == "r\n":
                     complete_book(books_list, mark_choice)
                     print("{} by {} marked as completed".format(books_list[mark_choice][0], books_list[mark_choice][1]))
@@ -89,11 +89,11 @@ def display_books(books_list, mode):
     print("Total pages for {} books: {}".format(num_books, num_pages))
 
 
-def new_item(i):
-    entry = input("{}: ".format(i))
+def new_item(string):
+    entry = input("{}: ".format(string))
     while len(entry) == 0 or len(entry.split()) == 0:
         print("Input can not be blank")
-        entry = input("{}: ".format(i))
+        entry = input("{}: ".format(string))
     return entry
 
 
@@ -109,16 +109,16 @@ def pages_entry():
     return str(pages)
 
 
-def verify_mark_num():
-    mark_choice = -1
-    while mark_choice < 0:
+def verify_mark_num(books_list):
+    function_loop = True
+    while function_loop:
         try:
             mark_choice = int(input(">>> "))
-            if mark_choice < 0:
-                print("Invalid input; enter a valid number")
-        except (ValueError, IndexError):
+            if 0 <= mark_choice <= len(books_list) - 1:
+                return mark_choice
+        except (ValueError,IndexError):
             print("Invalid input; enter a valid number")
-    return mark_choice
+        print("Invalid input; enter a valid number")
 
 
 def complete_book(books_list, mark_choice):
