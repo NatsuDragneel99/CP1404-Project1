@@ -28,7 +28,8 @@ def main():
             else:
                 print("No books")
         elif menu_input == "a":
-            books_list = books_list + [add_book()]
+            new_book = [new_item("Title"), new_item("Author"), pages_entry(), "r\n"]
+            books_list = books_list + [new_book]
             print("{} by {}, ({} pages) added to reading list".format(books_list[-1][0], books_list[-1][1],
                                                                       books_list[-1][2]))
         elif menu_input == "m":
@@ -82,15 +83,15 @@ def display_books(books_list, mode):
     print("Total pages for {} books: {}".format(num_books, num_pages))
 
 
-def add_book():
-    title = input("Title: ")
-    while len(title) == 0 or len(title.split()) == 0:
+def new_item(i):
+    entry = input("{}: ".format(i))
+    while len(entry) == 0 or len(entry.split()) == 0:
         print("Input can not be blank")
-        title = input("Title: ")
-    author = input("Author: ")
-    while len(author) == 0 or len(author.split()) == 0:
-        print("Input can not blank")
-        author = input("Author: ")
+        entry = input("{}: ".format(i))
+    return entry
+
+
+def pages_entry():
     pages = -1
     while pages < 0:
         try:
@@ -99,8 +100,7 @@ def add_book():
                 print("Number must be >= 0")
         except ValueError:
             print("Invalid input; enter a valid number")
-    new_book = [title, author, str(pages), "r\n"]
-    return new_book
+    return str(pages)
 
 
 def complete_book(books_list):
