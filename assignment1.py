@@ -1,6 +1,9 @@
 """
-Broderick Thomsen, 29th March
+Broderick Thomsen, 7th April 2017
 Project details:
+    This project is a simple reading list that allows users to keep track of their personal library, by adding the books
+    they need to read, and saving books they have read, to a file. The program can recount these details back to the
+    user, in addition to the total number of pages per book the user has read and pages they need to read.
 
 https://github.com/CP1404-2017-1/a1-BroderickWST
 """
@@ -29,7 +32,7 @@ def main():
             else:
                 print("No books")
         elif menu_input == "a":
-            new_book = [new_item("Title"), new_item("Author"), pages_entry(), "r\n"]
+            new_book = [add_item("Title"), add_item("Author"), add_pages(), "r\n"]
             books_list = books_list + [new_book]
             print("{} by {}, ({} pages) added to reading list".format(books_list[-1][0], books_list[-1][1],
                                                                       books_list[-1][2]))
@@ -38,7 +41,7 @@ def main():
                 print("Required books:")
                 display_books(books_list, menu_input)
                 print("Enter the number of a book to mark as completed")
-                mark_choice = verify_mark_num(books_list)
+                mark_choice = verify_mark_choice(books_list)
                 if books_list[mark_choice][-1] == "r\n":
                     complete_book(books_list, mark_choice)
                     print("{} by {} marked as completed".format(books_list[mark_choice][0], books_list[mark_choice][1]))
@@ -56,25 +59,22 @@ def main():
 
 def load_books():
     """
-
     open books.csv as file_read for reading
     for each row in file_read
-        append row from file_read, to books_list
+        append row from file_read, to list_of_books
     close file_read
-    return books_list
-
+    return list_of_books
     """
-    books_list = []
+    list_of_books = []
     file_read = open("books.csv", "r")
     for row in file_read.readlines():
-        books_list.append(row.split(","))
+        list_of_books.append(row.split(","))
     file_read.close()
-    return books_list
+    return list_of_books
 
 
 def book_check(books_list, mode):
     """
-
     books_confirmation is False
     for each book in books_list
         if book is required and if mode is "r" or "m"
@@ -82,7 +82,6 @@ def book_check(books_list, mode):
         if book and mode is completed
             books_confirmation is True
     return books_confirmation
-
     """
     books_confirmation = False
     for book in books_list:
@@ -96,7 +95,6 @@ def book_check(books_list, mode):
 
 def display_books(books_list, mode):
     """
-
     for each book and book item of books_list
         if last item != "r\n" and mode is "r" or "m"
             continue
@@ -106,7 +104,6 @@ def display_books(books_list, mode):
         count pages of book
         count book
     display total pages for total books
-
     """
     num_pages = 0
     num_books = 0
@@ -116,32 +113,30 @@ def display_books(books_list, mode):
                 continue
         elif item[-1] != "c\n" and mode == "c":
             continue
-        print("{:>3}. {:<40} {:<20} {} pages".format(book, (item[0]), (item[1]), item[2]))
+        print("{:>3}. {:<41} by {:<20} {} pages".format(book, (item[0]), (item[1]), item[2]))
         num_pages += int(item[2])
         num_books += 1
     print("Total pages for {} books: {}".format(num_books, num_pages))
 
 
-def new_item(string):
-    entry = input("{}: ".format(string))
-    while len(entry) == 0 or len(entry.split()) == 0:
+def add_item(string):
+    item = input("{}: ".format(string))
+    while len(item.split()) == 0:
         print("Input can not be blank")
-        entry = input("{}: ".format(string))
-    return entry
+        item = input("{}: ".format(string))
+    return item
 
 
-def pages_entry():
+def add_pages():
     """
-
-    when pages less than 0
+    while pages less than 0
         try
             get pages as int
-            if pages more than 0
-                display pages must be 0 or under
+            if pages less than than 0
+                display pages must be 0 or greater
         except on ValueError
             display bad input
         return pages as string
-
     """
     pages = -1
     while pages < 0:
@@ -154,7 +149,7 @@ def pages_entry():
     return str(pages)
 
 
-def verify_mark_num(books_list):
+def verify_mark_choice(books_list):
     function_loop = True
     while function_loop:
         try:
@@ -167,26 +162,22 @@ def verify_mark_num(books_list):
             print("Invalid input; enter a valid number")
 
 
-def complete_book(books_list, mark_choice):
+def complete_book(books_list, chosen_book):
     """
-
-    last value of chosen book in books_list = "c\n"
+    last item of chosen_book in books_list = "c\n"
     return books_list
-
     """
-    books_list[mark_choice][-1] = "c\n"
+    books_list[chosen_book][-1] = "c\n"
     return books_list
 
 
 def save_books(books_list):
     """
-
     open books.csv as file_write for writing
     for each book in books_list
         convert whitespace of book to comma, under book_string
         write book_string to file_write
     close file_write
-
     """
     file_write = open("books.csv", "w")
     for book in books_list:
