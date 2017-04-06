@@ -11,6 +11,7 @@ https://github.com/CP1404-2017-1/a1-BroderickWST
 FILE_NAME = "books.csv"
 MENU = "Menu:\nR - List required books\nC - List completed books" \
        "\nA - Add new book\nM - Mark a book as completed\nQ - Quit\n>>> "
+FUNCTION_LOOP = True
 
 
 def main():
@@ -53,8 +54,7 @@ def main():
             print("Invalid menu choice")
         menu_input = str(input(MENU)).lower()
     save_books(books_list)
-    print("{} books saved to {}".format(len(books_list), FILE_NAME))
-    print("Have a nice day :)")
+    print("{} books saved to {}\nHave a nice day :)".format(len(books_list), FILE_NAME))
 
 
 def load_books():
@@ -141,20 +141,19 @@ def add_pages():
             display bad input
         return pages as string
     """
-    pages = -1
-    while pages < 0:
+    while FUNCTION_LOOP:
         try:
             pages = int(input("Pages: "))
             if pages < 0:
                 print("Number must be >= 0")
+            else:
+                return str(pages)
         except ValueError:
             print("Invalid input; enter a valid number")
-    return str(pages)
 
 
 def verify_mark_choice(books_list):
-    function_loop = True
-    while function_loop:
+    while FUNCTION_LOOP:
         try:
             mark_choice = int(input(">>> "))
             if 0 <= mark_choice <= len(books_list) - 1:
