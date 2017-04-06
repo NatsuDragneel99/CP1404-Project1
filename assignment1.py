@@ -6,14 +6,15 @@ https://github.com/CP1404-2017-1/a1-BroderickWST
 """
 
 FILE_NAME = "books.csv"
+MENU = "Menu:\nR - List required books\nC - List completed books" \
+       "\nA - Add new book\nM - Mark a book as completed\nQ - Quit\n>>> "
 
 
 def main():
     print("Reading List 1.0 - by Broderick Thomsen")
     books_list = load_books()
     print("{} books loaded from {}".format(len(books_list), FILE_NAME))
-    menu_input = str(input("Menu:\nR - List required books\nC - List completed books\nA - Add new book\n"
-                           "M - Mark a book as completed\nQ - Quit\n>>> ")).lower()
+    menu_input = str(input(MENU)).lower()
     while menu_input != "q":
         if menu_input == "r":
             print("Required books:")
@@ -47,8 +48,7 @@ def main():
                 print("No required books")
         else:
             print("Invalid menu choice")
-        menu_input = str(input("Menu:\nR - List required books\nC - List completed books\nA - Add new book\n"
-                               "M - Mark a book as completed\nQ - Quit\n>>> ")).lower()
+        menu_input = str(input(MENU)).lower()
     save_books(books_list)
     print("{} books saved to {}".format(len(books_list), FILE_NAME))
     print("Have a nice day :)")
