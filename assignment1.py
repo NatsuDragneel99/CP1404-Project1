@@ -55,26 +55,59 @@ def main():
 
 
 def load_books():
+    """
+
+    open books.csv as file_read for reading
+    for each row in file_read
+        append row from file_read, to books_list
+    close file_read
+    return books_list
+
+    """
     books_list = []
-    file = open("books.csv", "r")
-    for row in file.readlines():
+    file_read = open("books.csv", "r")
+    for row in file_read.readlines():
         books_list.append(row.split(","))
-    file.close()
+    file_read.close()
     return books_list
 
 
 def book_check(books_list, mode):
-    book_status = False
+    """
+
+    books_confirmation is False
+    for each book in books_list
+        if book is required and if mode is "r" or "m"
+            books_confirmation is True
+        if book and mode is completed
+            books_confirmation is True
+    return books_confirmation
+
+    """
+    books_confirmation = False
     for book in books_list:
         if book[-1] == "r\n":
             if mode == "r" or mode == "m":
-                book_status = True
+                books_confirmation = True
         elif book[-1] == "c\n" and mode == "c":
-            book_status = True
-    return book_status
+            books_confirmation = True
+    return books_confirmation
 
 
 def display_books(books_list, mode):
+    """
+
+    for each book and book item of books_list
+        if last item != "r\n" and mode is "r" or "m"
+            continue
+        otherwise if last item != "c\n" and mode is "c"
+            continue
+        display book title, author and pages
+        count pages of book
+        count book
+    display total pages for total books
+
+    """
     num_pages = 0
     num_books = 0
     for book, item in enumerate(books_list):
@@ -98,6 +131,18 @@ def new_item(string):
 
 
 def pages_entry():
+    """
+
+    when pages less than 0
+        try
+            get pages as int
+            if pages more than 0
+                display pages must be 0 or under
+        except on ValueError
+            display bad input
+        return pages as string
+
+    """
     pages = -1
     while pages < 0:
         try:
@@ -116,22 +161,38 @@ def verify_mark_num(books_list):
             mark_choice = int(input(">>> "))
             if 0 <= mark_choice <= len(books_list) - 1:
                 return mark_choice
-        except (ValueError,IndexError):
+            else:
+                print("Invalid input; enter a valid number")
+        except (ValueError, IndexError):
             print("Invalid input; enter a valid number")
-        print("Invalid input; enter a valid number")
 
 
 def complete_book(books_list, mark_choice):
+    """
+
+    last value of chosen book in books_list = "c\n"
+    return books_list
+
+    """
     books_list[mark_choice][-1] = "c\n"
     return books_list
 
 
 def save_books(books_list):
-    file = open("books.csv", "w")
+    """
+
+    open books.csv as file_write for writing
+    for each book in books_list
+        convert whitespace of book to comma, under book_string
+        write book_string to file_write
+    close file_write
+
+    """
+    file_write = open("books.csv", "w")
     for book in books_list:
         book_string = ",".join(book)
-        file.write(book_string)
-    file.close()
+        file_write.write(book_string)
+    file_write.close()
 
 
 if __name__ == '__main__':
