@@ -36,7 +36,13 @@ def main():
             if book_check(books_list, menu_input):
                 print("Required books:")
                 display_books(books_list, menu_input)
-                complete_book(books_list)
+                print("Enter the number of a book to mark as completed")
+                mark_choice = verify_mark_num()
+                if books_list[mark_choice][-1] == "r\n":
+                    complete_book(books_list, mark_choice)
+                    print("{} by {} marked as completed".format(books_list[mark_choice][0], books_list[mark_choice][1]))
+                else:
+                    print("That book is already completed")
             else:
                 print("No required books")
         else:
@@ -49,12 +55,12 @@ def main():
 
 
 def load_books():
-    book_list = []
-    file = open("books.csv", "r+")
+    books_list = []
+    file = open("books.csv", "r")
     for row in file.readlines():
-        book_list.append(row.split(","))
+        books_list.append(row.split(","))
     file.close()
-    return book_list
+    return books_list
 
 
 def book_check(books_list, mode):
@@ -103,23 +109,21 @@ def pages_entry():
     return str(pages)
 
 
-def complete_book(books_list):
-    loop = True
-    print("Enter the number of a book to mark as completed")
-    while loop:
+def verify_mark_num():
+    mark_choice = -1
+    while mark_choice < 0:
         try:
             mark_choice = int(input(">>> "))
-            if mark_choice >= 0 and books_list[mark_choice][-1] != "c\n":
-                books_list[mark_choice][-1] = "c\n"
-                print("{} by {} marked as completed".format(books_list[mark_choice][0], books_list[mark_choice][1]))
-                return books_list
-            elif books_list[mark_choice][-1] == "c\n":  # Allows negative integers
-                print("That book is already completed")
-                loop = False
-            else:
+            if mark_choice < 0:
                 print("Invalid input; enter a valid number")
         except (ValueError, IndexError):
             print("Invalid input; enter a valid number")
+    return mark_choice
+
+
+def complete_book(books_list, mark_choice):
+    books_list[mark_choice][-1] = "c\n"
+    return books_list
 
 
 def save_books(books_list):
