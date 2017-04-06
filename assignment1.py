@@ -13,17 +13,17 @@ def main():
     books_list = load_books()
     print("{} books loaded from {}".format(len(books_list), FILE_NAME))
     menu_input = str(input("Menu:\nR - List required books\nC - List completed books\nA - Add new book\n"
-                           "M - Mark a book as completed\nQ - Quit\n>>>")).lower()
+                           "M - Mark a book as completed\nQ - Quit\n>>> ")).lower()
     while menu_input != "q":
         if menu_input == "r":
+            print("Required books:")
             if book_check(books_list, menu_input):
-                print("Required books:")
                 display_books(books_list, menu_input)
             else:
                 print("No books")
         elif menu_input == "c":
+            print("Completed books:")
             if book_check(books_list, menu_input):
-                print("Completed books:")
                 display_books(books_list, menu_input)
             else:
                 print("No books")
@@ -41,7 +41,7 @@ def main():
         else:
             print("Invalid menu choice")
         menu_input = str(input("Menu:\nR - List required books\nC - List completed books\nA - Add new book\n"
-                               "M - Mark a book as completed\nQ - Quit\n>>>")).lower()
+                               "M - Mark a book as completed\nQ - Quit\n>>> ")).lower()
     save_books(books_list)
     print("{} books saved to {}".format(len(books_list), FILE_NAME))
     print("Have a nice day :)")
@@ -84,11 +84,11 @@ def display_books(books_list, mode):
 
 def add_book():
     title = input("Title: ")
-    while len(title) == 0 or title == " ":
+    while len(title) == 0 or len(title.split()) == 0:
         print("Input can not be blank")
         title = input("Title: ")
     author = input("Author: ")
-    while len(author) == 0 or author == " ":
+    while len(author) == 0 or len(author.split()) == 0:
         print("Input can not blank")
         author = input("Author: ")
     pages = -1
