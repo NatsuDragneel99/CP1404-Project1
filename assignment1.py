@@ -62,13 +62,16 @@ def load_books():
     open books.csv as file_read for reading
     for each row in file_read
         append row from file_read, to list_of_books
+    sort list_of_books by author first, then pages
     close file_read
     return list_of_books
     """
+    import operator
     list_of_books = []
     file_read = open("books.csv", "r")
     for row in file_read.readlines():
         list_of_books.append(row.split(","))
+    list_of_books.sort(key=operator.itemgetter(1, 2))
     file_read.close()
     return list_of_books
 
