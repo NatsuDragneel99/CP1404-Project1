@@ -23,13 +23,13 @@ def main():
         if menu_input == "r":
             print("Required books:")
             if book_check(books_list, menu_input):
-                display_books(books_list, menu_input)
+                print(display_books(books_list, menu_input))
             else:
                 print("No books")
         elif menu_input == "c":
             print("Completed books:")
             if book_check(books_list, menu_input):
-                display_books(books_list, menu_input)
+                print(display_books(books_list, menu_input))
             else:
                 print("No books")
         elif menu_input == "a":
@@ -40,7 +40,7 @@ def main():
         elif menu_input == "m":
             if book_check(books_list, menu_input):
                 print("Required books:")
-                display_books(books_list, menu_input)
+                print(display_books(books_list, menu_input))
                 print("Enter the number of a book to mark as completed")
                 mark_choice = verify_mark_choice(books_list)
                 if books_list[mark_choice][-1] == "r\n":
@@ -52,6 +52,7 @@ def main():
                 print("No required books")
         else:
             print("Invalid menu choice")
+        books_list = sort_books(books_list)
         menu_input = str(input(MENU)).lower()
     save_books(books_list)
     print("{} books saved to {}\nHave a nice day :)".format(len(books_list), FILE_NAME))
@@ -62,17 +63,20 @@ def load_books():
     open books.csv as file_read for reading
     for each row in file_read
         append row from file_read, to list_of_books
-    sort list_of_books by author first, then pages
     close file_read
     return list_of_books
     """
-    import operator
     list_of_books = []
     file_read = open("books.csv", "r")
     for row in file_read.readlines():
         list_of_books.append(row.split(","))
-    list_of_books.sort(key=operator.itemgetter(1, 2))
     file_read.close()
+    return list_of_books
+
+
+def sort_books(list_of_books):
+    import operator
+    list_of_books.sort(key=operator.itemgetter(1, 2))
     return list_of_books
 
 
@@ -103,11 +107,13 @@ def display_books(books_list, mode):
             continue
         otherwise if last item != "c\n" and mode is "c"
             continue
-        display book title, author and pages
+        books_string + book title, author and pages, \n
         count pages of book
         count book
-    display total pages for total books
+    books_string + total pages for books
+    return books_string
     """
+    books_string = ""
     num_pages = 0
     num_books = 0
     for book, item in enumerate(books_list):
@@ -116,10 +122,11 @@ def display_books(books_list, mode):
                 continue
         elif item[-1] != "c\n" and mode == "c":
             continue
-        print("{:>3}. {:<41} by {:<20} {} pages".format(book, (item[0]), (item[1]), item[2]))
+        books_string += "{:>3}. {:<41} by {:<20} {} pages\n".format(book, (item[0]), (item[1]), item[2])
         num_pages += int(item[2])
         num_books += 1
-    print("Total pages for {} books: {}".format(num_books, num_pages))
+    books_string += ("Total pages for {} books: {}".format(num_books, num_pages))
+    return books_string
 
 
 def add_item(string):
